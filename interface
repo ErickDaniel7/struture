@@ -1,0 +1,28 @@
+🔌 1. O que é uma Interface?Uma interface é uma estrutura 100% abstrata. Ela não possui atributos comuns (variáveis de instância) e não pode ser instanciada com new. Ela serve apenas para ditar um conjunto de métodos que outras classes são obrigadas a implementar.Imagine que uma interface é como o padrão de uma tomada elétrica: ela define o formato dos furos (métodos), mas quem gera a energia real é o aparelho que você conecta nela (a classe que a implementa).💻 2. Exemplo Prático de SintaxeDefinindo a InterfaceUsamos a palavra-chave interface. Todos os métodos dentro dela são, por padrão, public e abstract (você não precisa nem digitar essas palavras).Javapackage com.exemplo.arena;
+
+public interface Controlador {
+    void conectarAoServidor();
+    void enviarComando(String comando);
+}
+Implementando a InterfacePara uma classe herdar as obrigações de uma interface, usamos a palavra-chave implements (em vez de extends). A classe é obrigada a usar @Override e dar um corpo para todos os métodos.Javapackage com.exemplo.arena;
+
+// Uma classe de periférico de jogo implementando o contrato do Controlador
+public class TecladoGamer implements Controlador {
+
+    @Override
+    public void conectarAoServidor() {
+        System.out.println("Teclado Gamer conectado via USB e sincronizado com o servidor.");
+    }
+
+    @Override
+    public void enviarComando(String comando) {
+        System.out.println("Tecla pressionada: " + comando);
+    }
+}
+🏆 3. Principais Diferenças (Para não errar na prova)CaracterísticaClasse Abstrata (abstract class)Interface (interface)RelaçãoModela herança pura: É UM bicho/objeto.Modela comportamento: PODE FAZER algo.HerançaO Java proíbe herança múltipla (apenas 1 pai).Permite herança múltipla (uma classe pode implementar várias interfaces).AtributosPode ter variáveis normais com qualquer modificador.Só pode ter constantes (public static final).⚡ 4. O papel no PolimorfismoAssim como as superclasses, as interfaces permitem o uso do Polimorfismo (Upcasting). Você pode criar uma lista do tipo da interface e guardar qualquer objeto que a implemente lá dentro:Javapublic class Main {
+    public static void main(String[] args) {
+        // Polimorfismo usando Interface
+        Controlador meuDispositivo = new TecladoGamer();
+        meuDispositivo.conectarAoServidor(); // Roda a versão do TecladoGamer
+    }
+}
