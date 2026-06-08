@@ -1,0 +1,184 @@
+Estes exercícios cobrem exatamente os pilares de Orientação a Objetos: Associação de Classes (um objeto dentro do outro, como Aluno na Escola), Herança (reutilizar código de uma classe mãe) e Polimorfismo (o mesmo método se comportando de formas diferentes).
+
+Como são 10 cenários curtos de teste, preparei os códigos de forma bem direta e limpa para você estudar ou rodar aí no seu IntelliJ.
+
+1. Sistema de Escola (Associação de Classes)
+Java
+class Aluno {
+    String nome;
+    int idade;
+    public Aluno(String nome, int idade) { this.nome = nome; this.idade = idade; }
+}
+class Escola {
+    String nome;
+    Aluno alunoMatriculado;
+    public Escola(String nome, Aluno aluno) { this.nome = nome; this.alunoMatriculado = aluno; }
+    public void exibirInformacoes() {
+        System.out.println("Escola: " + nome + " | Aluno: " + alunoMatriculado.nome + " (" + alunoMatriculado.idade + " anos)");
+    }
+}
+// Para rodar no main:
+// Aluno a = new Aluno("Carlos", 15); Escola e = new Escola("Colégio Delta", a); e.exibirInformacoes();
+2. Som do Zoológico (Polimorfismo / Sobrescrita)
+Java
+class Animal {
+    public void emitirSom() { System.out.println("Som de animal."); }
+}
+class Cachorro extends Animal {
+    @Override
+    public void emitirSom() { System.out.println("O cachorro latindo: Au! Au!"); }
+}
+// Para rodar no main:
+// Animal c = new Cachorro(); c.emitirSom();
+3. Registro da Biblioteca (Associação de Classes)
+Java
+class Livro {
+    String titulo, autor;
+    public Livro(String titulo, String autor) { this.titulo = titulo; this.autor = autor; }
+}
+class Biblioteca {
+    String nome;
+    Livro livroArmazenado;
+    public Biblioteca(String nome, Livro livro) { this.nome = nome; this.livroArmazenado = livro; }
+    public void exibirDados() {
+        System.out.println("Biblioteca: " + nome + " | Livro: " + livroArmazenado.titulo + " - Autor: " + livroArmazenado.autor);
+    }
+}
+// Para rodar no main:
+// Livro l = new Livro("Dom Casmurro", "Machado de Assis"); Biblioteca b = new Biblioteca("Biblioteca Central", l); b.exibirDados();
+4. Papel do Funcionário (Polimorfismo)
+Java
+abstract class Funcionario {
+    public abstract void executarAtividade();
+}
+class Gerente extends Funcionario {
+    @Override
+    public void ejecutarAtividade() { System.out.println("Atividade do Gerente: Gerenciando a equipe e definindo metas."); }
+}
+class Vendedor extends Funcionario {
+    @Override
+    public void executarAtividade() { System.out.println("Atividade do Vendedor: Atendendo clientes e fechando vendas."); }
+}
+5. Movimento de Veículos (Polimorfismo com Listas)
+Java
+import java.util.List;
+
+abstract class Veiculo {
+    public abstract void mover();
+}
+class Carro extends Veiculo { @Override public void mover() { System.out.println("O carro acelera na pista: Vrum!"); } }
+class Moto extends Veiculo { @Override public void mover() { System.out.println("A moto corta o trânsito: Randandan!"); } }
+class Bicicleta extends Veiculo { @Override public void mover() { System.out.println("A bicicleta avança pedalando suavemente."); } }
+
+// No main basta criar a lista: 
+// List<Veiculo> lista = List.of(new Carro(), new Moto(), new Bicicleta());
+// for(Veiculo v : lista) { v.mover(); }
+6. Profissionais da Universidade (Herança com super)
+Java
+class Professor {
+    String nome;
+    public Professor(String nome) { this.nome = nome; }
+    public void apresentar() { System.out.println("Olá, sou o Professor " + nome); }
+}
+class Coordenador extends Professor {
+    String departamento;
+    public Coordenador(String nome, String departamento) { super(nome); this.departamento = departamento; }
+    @Override
+    public void apresentar() {
+        super.apresentar(); // Reaproveita a apresentação base
+        System.out.println("Também atuo como Coordenador do departamento de " + departamento);
+    }
+}
+7. Formas de Pagamento (Polimorfismo em Sequência)
+Java
+import java.util.List;
+
+abstract class Pagamento {
+    public abstract void processar();
+}
+class Pix extends Pagamento { @Override public void processar() { System.out.println("Pagamento via Pix: Aprovado instantaneamente por QR Code."); } }
+class Cartao extends Pagamento { @Override public void processar() { System.out.println("Pagamento via Cartão: Transação aprovada pela operadora."); } }
+class Boleto extends Pagamento { @Override public void processar() { System.out.println("Pagamento via Boleto: Registrado. Aguardando compensação bancária."); } }
+
+// No main: List.of(new Pix(), new Cartao(), new Boleto()).forEach(Pagamento::processar);
+8. Estrutura do Curso (Associação de Lista)
+Java
+import java.util.List;
+
+class Participante {
+    String nome;
+    public Participante(String nome) { this.nome = nome; }
+    public void apresentar() { System.out.println("Participante: " + nome); }
+}
+class ProfResponsavel extends Participante {
+    public ProfResponsavel(String nome) { super(nome); }
+    @Override public void apresentar() { System.out.println("[Professor] Meu nome é " + nome + ". Serei o responsável pelas aulas."); }
+}
+class AlunoMatriculado extends Participante {
+    public AlunoMatriculado(String nome) { super(nome); }
+    @Override public void apresentar() { System.out.println("[Aluno] Oi, meu nome é " + nome + " e estou pronto para aprender."); }
+}
+class Curso {
+    String nomeCurso;
+    ProfResponsavel professor;
+    List<AlunoMatriculado> alunos;
+    public Curso(String nomeCurso, ProfResponsavel professor, List<AlunoMatriculado> alunos) {
+        this.nomeCurso = nomeCurso; this.professor = professor; this.alunos = alunos;
+    }
+    public void apresentarCurso() {
+        System.out.println("--- Curso: " + nomeCurso + " ---");
+        professor.apresentar();
+        alunos.forEach(AlunoMatriculado::apresentar);
+    }
+}
+9. Clínica Veterinária (Reação ao Chamado)
+Java
+import java.util.List;
+
+abstract class AnimalClinica {
+    String nome;
+    public AnimalClinica(String nome) { this.nome = nome; }
+    public abstract void reagirAoChamado();
+}
+class Gato extends AnimalClinica {
+    public Gato(String nome) { super(nome); }
+    @Override public void reagirAoChamado() { System.out.println(nome + " (Gato) fingiu que não ouviu e miou baixo."); }
+}
+class Cao extends AnimalClinica {
+    public Cao(String nome) { super(nome); }
+    @Override public void reagirAoChamado() { System.out.println(nome + " (Cachorro) começou a abanar o rabo e correu até a sala."); }
+}
+class Papagaio extends AnimalClinica {
+    public Papagaio(String nome) { super(nome); }
+    @Override public void reagirAoChamado() { System.out.println(nome + " (Papagaio) começou a gritar e imitar o telefone."); }
+}
+10. Plataforma Educacional (Gestão de Turma)
+Java
+import java.util.List;
+
+class Usuario {
+    String nome;
+    public Usuario(String nome) { this.nome = nome; }
+    public void seApresentar() { System.out.println("Usuário: " + nome); }
+}
+class Instrutor extends Usuario {
+    public Instrutor(String nome) { super(nome); }
+    @Override public void seApresentar() { System.out.println("👨‍🏫 Instrutor Titular: " + nome); }
+}
+class Estudante extends Usuario {
+    public Estudante(String nome) { super(nome); }
+    @Override public void seApresentar() { System.out.println("👨‍🎓 Estudante Matriculado: " + nome); }
+}
+class Turma {
+    String codigoTurma;
+    Instrutor instrutor;
+    List<Estudante> estudantes;
+    public Turma(String codigoTurma, Instrutor instrutor, List<Estudante> estudantes) {
+        this.codigoTurma = codigoTurma; this.instrutor = instrutor; this.estudantes = estudantes;
+    }
+    public void exibirPainel() {
+        System.out.println("Turma: " + codigoTurma);
+        instrutor.seApresentar();
+        estudantes.forEach(Estudante::seApresentar);
+    }
+}
