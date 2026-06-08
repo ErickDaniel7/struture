@@ -1,0 +1,107 @@
+package com.exemplo.arena;
+
+import java.util.ArrayList;
+import java.util.List;
+
+// 1. O Topo do seu Diagrama: A classe mãe de todas
+abstract class Arcossauro {
+    private String nomeEspecie;
+
+    public Arcossauro(String nomeEspecie) {
+        this.nomeEspecie = nomeEspecie;
+    }
+
+    public String getNomeEspecie() {
+        return nomeEspecie;
+    }
+
+    // Método abstrato: cada filho será obrigado a dizer suas próprias características
+    public abstract void exibirCaracteristicas();
+}
+
+// 2. Classes que herdam DIRETO de Arcossauro (Segundo nível do diagrama)
+class Tecodonte extends Arcossauro {
+    public Tecodonte(String nomeEspecie) { super(nomeEspecie); }
+
+    @Override
+    public void exibirCaracteristicas() {
+        System.out.println("🦕 [" + getNomeEspecie() + "] Tipo: Tecodonte. Característica: Arcossauro primitivo com dentes fixos em alvéolos.");
+    }
+}
+
+class Pterossauro extends Arcossauro {
+    public Pterossauro(String nomeEspecie) { super(nomeEspecie); }
+
+    @Override
+    public void exibirCaracteristicas() {
+        System.out.println("🦅 [" + getNomeEspecie() + "] Tipo: Pterossauro. Característica: Réptil voador com asas de membrana de pele.");
+    }
+}
+
+class Crocodilo extends Arcossauro {
+    public Crocodilo(String nomeEspecie) { super(nomeEspecie); }
+
+    @Override
+    public void exibirCaracteristicas() {
+        System.out.println("🐊 [" + getNomeEspecie() + "] Tipo: Crocodilo. Característica: Predador semiaquático, sobrevivente atual da linhagem.");
+    }
+}
+
+// 3. Classe Dinossauro (Herda de Arcossauro e serve de mãe para o próximo nível)
+abstract class Dinossauro extends Arcossauro {
+    private String dieta;
+
+    public Dinossauro(String nomeEspecie, String dieta) {
+        super(nomeEspecie);
+        this.dieta = dieta;
+    }
+
+    public String getDieta() {
+        return dieta;
+    }
+}
+
+// 4. Subclasses de Dinossauro (Terceiro nível do diagrama)
+class Saurisquio extends Dinossauro {
+    public Saurisquio(String nomeEspecie, String dieta) {
+        super(nomeEspecie, dieta);
+    }
+
+    @Override
+    public void exibirCaracteristicas() {
+        System.out.println("🦖 [" + getNomeEspecie() + "] Tipo: Dinossauro Saurísquio. Dieta: " + getDieta() + ". Característica: Possui bacia com estrutura de lagarto (Ex: Tiranossauro Rex).");
+    }
+}
+
+class Ornitisquio extends Dinossauro {
+    public Ornitisquio(String nomeEspecie, String dieta) {
+        super(nomeEspecie, dieta);
+    }
+
+    @Override
+    public void exibirCaracteristicas() {
+        System.out.println("🛡️ [" + getNomeEspecie() + "] Tipo: Dinossauro Ornitísquio. Dieta: " + getDieta() + ". Característica: Possui bacia com estrutura de ave (Ex: Tricerátops).");
+    }
+}
+
+// 5. Classe Principal que executa o Polimorfismo
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("--- HIERARQUIA DOS ARCOSSAUROS --- \n");
+
+        // POLIMORFISMO: Uma lista da classe mãe (Arcossauro) que consegue guardar qualquer um dos filhos
+        List<Arcossauro> listaAnimais = new ArrayList<>();
+
+        // Instanciando os objetos do diagrama
+        listaAnimais.add(new Tecodonte("Proterosuchus"));
+        listaAnimais.add(new Pterossauro("Pterodáctilo"));
+        listaAnimais.add(new Crocodilo("Jacaré-Açu"));
+        listaAnimais.add(new Saurisquio("Tiranossauro Rex", "Carnívoro"));
+        listaAnimais.add(new Ornitisquio("Tricerátops", "Herbívoros"));
+
+        // Varre a lista chamando o mesmo método, mas cada um responde com seu próprio texto
+        for (Arcossauro animal : listaAnimais) {
+            animal.exibirCaracteristicas();
+        }
+    }
+}
